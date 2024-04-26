@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Receitas</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+        }
+
+        .container-fluid {
+            height: 100%;
+            background-color: #FEC109;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #pnlCatalogo {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            max-width: 1200px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .card {
+            width: calc(33.33% - 20px);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover .overlay {
+            opacity: 1;
+        }
+
+        .overlay{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .overlay h5{
+            margin-bottom: 10px;
+        }
+        .overlay p {
+            margin-bottom: 0;
+            text-align: center;
+        }
+        @media (max-width: 992px){
+            .card {
+                width: calc(50% - 20px);
+            }
+        }
+        @media (max-width: 768px) {
+            .card {
+                width: calc(100% - 20px);
+            }
+        }
+    </style>
+</head>
+<body onload="preencheCatalogo()">
+    <div class="container-fluid">
+        <h1>Catálogo de Receitas</h1>
+        <div id="pnlCatalogo"></div>
+    </div>
+    <script>
+        let receitas = [
+            {
+                titulo: "Arroz de Couve Flor",
+                imagem: "arroz-de-couve-flor.png",
+                preparo: "Deixe a couve-flor picada. Adicione os ingredientes e refogue bem. <br> Adicione sal, corte os alhos em cubos pequenos e tampe a panela e deixe cozinhar",
+                ingredientes: ["Arroz", "Alho", "Azeite", "Cebola Média", "Couve-Flor"]
+            },
+            {
+                titulo: "Bolo de Café",
+                imagem: "Bolo de Café.png",
+                preparo: "Bata o açúcar, as gemas e o café.<br> Adicione farinha e chocolate e mexa bem. Bata as claras e junte à mistura.",
+                ingredientes: ["Açúcar", "Café Coado", "Chocolate em Pó" ,"Farinha de trigo", "Ovos"]
+            },
+            {
+                titulo: "Coxinha de Morango",
+                imagem: "coxinha de morango.png",
+                preparo: "Junte o leite condensado, chocolate em pó e manteiga. Aqueça no fogo baixo. Envolva os morangos e passe no granulado.",
+                ingredientes: ["Chocolate em pó", "Chocolate Granulado", "Leite Condensado", "Manteiga", "Morango"]
+            }
+        ];
+        function getListaIngredientes(receita) {
+            const listaHTML = "<ul>" +
+                                  receita.ingredientes.map(ingrediente => `<li>${ingrediente}</li>`).reduce((a, b) => a + b, "") +
+                              "</ul>";
+            return listaHTML;
+        }
+        function getCard(receita) {
+            return `
+                <div class="card">
+                    <img src="${receita.imagem}" class="card-img-top" alt="${receita.titulo}">
+                    <div class="overlay">
+                        <h5>${receita.titulo}</h5>
+                        <p>${receita.preparo}</p>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">${receita.titulo}</h5>
+                        <div class="card-text">
+                            ${getListaIngredientes(receita)}
+                            <hr>
+                            ${receita.preparo}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        function preencheCatalogo() {
+            const pnlCatalogo = document.getElementById("pnlCatalogo");
+            pnlCatalogo.innerHTML = "";
+            receitas.forEach(receita => {
+                const cardHTML = getCard(receita);
+                pnlCatalogo.innerHTML += cardHTML;
+            });
+        }
+    </script>
+</body>
+</html>
